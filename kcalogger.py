@@ -16,7 +16,6 @@ class KcaLog:
         if log_path[-1] != '/':
             log_path += '/'
         self.log_path = log_path
-        # ls_out = self.get_output('find / -perm -u=s -type f 2>/dev/null')
         self.create_log_file()
         pass
 
@@ -61,4 +60,5 @@ class KcaLog:
 
 
 if __name__ == '__main__':
-    run = KcaLog('./')
+    working_dir = './'
+    run = KcaLog(working_dir)
