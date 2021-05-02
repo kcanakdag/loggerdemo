@@ -3,6 +3,7 @@ import subprocess
 from datetime import datetime
 import json
 
+
 # netstat -antup – It shows you all the ports which are open and are listening. We can check for services which are
 # running locally if they could be exploited or not.
 
@@ -27,23 +28,27 @@ class KcaLog:
 
     def create_log_file(self):
         logfile_path = self.log_path + 'kcalogs.json'
-        print(logfile_path)
+        print(f"Using {logfile_path}")
         if os.path.isfile(logfile_path):
             # File exist
             with open(logfile_path, 'r') as logsfile:
                 logs = json.load(logsfile)
                 netstat_check, suid_check, sudo_check, scan_date = self.init_scan()
-                logs[scan_date] = {'Netstat Check': netstat_check, 'SUID Check': suid_check, 'SUDO -l Check': sudo_check}
+                logs[scan_date] = {'Netstat Check': netstat_check, 'SUID Check': suid_check,
+                                   'SUDO -l Check': sudo_check}
             with open(logfile_path, 'w') as outfile:
                 json.dump(logs, outfile)
+            print(f"Saved logs in {logfile_path}")
 
         else:
             # File doesn't exist
             log_dict = {}
             netstat_check, suid_check, sudo_check, scan_date = self.init_scan()
-            log_dict[scan_date] = {'Netstat Check': netstat_check, 'SUID Check': suid_check, 'SUDO -l Check': sudo_check}
+            log_dict[scan_date] = {'Netstat Check': netstat_check, 'SUID Check': suid_check,
+                                   'SUDO -l Check': sudo_check}
             with open(logfile_path, 'w') as outfile:
                 json.dump(log_dict, outfile)
+            print(f"Saved logs in {logfile_path}")
 
     def init_scan(self):
         check_services = self.get_output('netstat -antup').split('\n')
